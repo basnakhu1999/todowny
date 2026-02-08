@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 For พี่ดาวนี่</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Intro Screen -->
+    <div class="intro-screen" id="introScreen">
+        <div class="intro-bg-hearts">
+            <span class="intro-float-heart">💕</span>
+            <span class="intro-float-heart">❤️</span>
+            <span class="intro-float-heart">💗</span>
+            <span class="intro-float-heart">💖</span>
+            <span class="intro-float-heart">🤍</span>
+            <span class="intro-float-heart">💕</span>
+        </div>
+        <div class="intro-content">
+            <!-- Loading state (shown first) -->
+            <div class="intro-loading" id="introLoading">
+                <span class="loading-heart">💗</span>
+                <span class="loading-text">กำลังโหลดความรู้สึก...</span>
+            </div>
+
+            <!-- Ready state (shown after load) -->
+            <div class="intro-ready" id="introReady" style="display: none;">
+                <div class="intro-envelope" id="introEnvelope" onclick="openIntro()">
+                    <div class="envelope-icon">💌</div>
+                    <div class="envelope-glow"></div>
+                </div>
+                <p class="intro-text">มีคนส่งความรู้สึกมาให้...</p>
+                <p class="intro-hint">✨ แตะซองจดหมายเพื่อเปิดดู ✨</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div id="app">
+        <!-- Page 1: Welcome -->
+        <section class="page active" id="page1">
+            <div class="page-content">
+                <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
+                <div class="welcome-image">
+                    <div class="couple-illustration">
+                        <div class="heart-big">💕</div>
+                        <div class="sparkles">
+                            <span class="sparkle">✨</span>
+                            <span class="sparkle">✨</span>
+                            <span class="sparkle">✨</span>
+                            <span class="sparkle">✨</span>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="title-main">วันนี้มีอะไรอยากให้เธอดู...</h1>
+                <p class="subtitle">ลองกดไปเรื่อยๆ นะ 💕</p>
+                <button class="btn-primary" onclick="nextPage()">
+                    <span>เริ่มเซอร์ไพรส์</span>
+                    <span class="btn-emoji">💌</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Page 2: Memory Feel -->
+        <section class="page" id="page2">
+            <div class="page-content">
+                <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
+                <div class="feel-container">
+                    <div class="feel-emoji" id="feelEmoji">🥰</div>
+                    <p class="feel-text" id="feelText">กดปุ่มด้านล่างเพื่อดูความรู้สึก...</p>
+                    <div class="feel-counter">
+                        <span id="feelCounter">0</span> / <span id="feelTotal">5</span>
+                    </div>
+                    <div class="progress-hearts" id="progressHearts">
+                        <span class="progress-heart">🤍</span>
+                        <span class="progress-heart">🤍</span>
+                        <span class="progress-heart">🤍</span>
+                        <span class="progress-heart">🤍</span>
+                        <span class="progress-heart">🤍</span>
+                    </div>
+                </div>
+                <button class="btn-secondary" onclick="nextFeel()">
+                    กดอีกครั้ง 💗
+                </button>
+                <button class="btn-next" id="feelNextBtn" style="display:none" onclick="nextPage()">
+                    ไปต่อเลย →
+                </button>
+            </div>
+        </section>
+
+        <!-- Page 3: Photo Moment -->
+        <section class="page" id="page3">
+            <div class="page-content">
+                <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
+                <h2 class="section-title">📸 Photo Moment</h2>
+                <div class="photo-gallery">
+                    <div class="photo-frame">
+                        <div class="photo-placeholder" id="photoDisplay">
+                            <span class="photo-icon">📷</span>
+                            <p>รูปความทรงจำของเรา</p>
+                        </div>
+                    </div>
+                    <p class="photo-caption" id="photoCaption">รูปนี้...เราเผลอยิ้มทั้งวันเลยรู้ไหม 😊</p>
+                </div>
+                <div class="photo-dots" id="photoDots"></div>
+                <button class="btn-secondary" onclick="nextPhoto()">
+                    ดูรูปถัดไป 📸
+                </button>
+                <button class="btn-next" id="photoNextBtn" style="display:none" onclick="nextPage()">
+                    ไปดูต่อ →
+                </button>
+            </div>
+        </section>
+
+        <!-- Page 4: Postcard -->
+        <section class="page" id="page4">
+            <div class="page-content">
+                <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
+                <h2 class="section-title">💌 การ์ดจากใจ</h2>
+                <div class="card-container" onclick="startPostcard()">
+                    <div class="postcard" id="postcard">
+                        <div class="card-front">
+                            <div class="card-decoration">💝</div>
+                            <p class="card-hint">แตะเพื่อเปิดการ์ด</p>
+                            <div class="card-hearts">❤️ 💕 ❤️</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-message" id="cardMessage">
+                                <p class="greeting" id="greetingText"></p>
+                                <p class="message-line" id="messageLine1"></p>
+                                <p class="message-line" id="messageLine2"></p>
+                                <p class="message-line" id="messageLine3"></p>
+                                <p class="signature" id="signatureText"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-next" id="postcardNextBtn" style="display:none" onclick="nextPage()">
+                    ไปต่อ →
+                </button>
+            </div>
+        </section>
+
+        <!-- Postcard Image Popup -->
+        <div class="postcard-popup" id="postcardPopup">
+            <div class="popup-content">
+                <button class="popup-close" onclick="closePostcardPopup()">✕</button>
+                <img src="https://c8.alamy.com/comp/2HBYYFG/romantic-set-of-postcard-love-valentines-day-vector-design-concept-for-valentines-day-and-other-users-2HBYYFG.jpg"
+                    alt="Valentine Postcard" class="popup-image">
+            </div>
+        </div>
+
+        <!-- Page 5: ฝากความรู้สึก -->
+        <section class="page" id="page5">
+            <div class="page-content">
+                <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
+                <h2 class="section-title">💬 ฝากความรู้สึก</h2>
+                <p class="form-intro">อยากฝากอะไรกลับมาหาเราหน่อยไหม<br>เราอยากอ่านนะ 🙂</p>
+                <form id="feelingForm" onsubmit="sendToSheet(event)">
+                    <div class="form-group">
+                        <label for="nickname">ชื่อเล่น (ไม่บังคับ)</label>
+                        <input type="text" id="nickname" placeholder="เรียกฉันว่า...">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">ความรู้สึกที่อยากบอก</label>
+                        <textarea id="message" rows="4" placeholder="พิมพ์อะไรก็ได้ที่อยากบอก..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        ส่งความรู้สึก 💖
+                    </button>
+                </form>
+                <button class="btn-skip" onclick="nextPage()">
+                    ข้ามไปก่อน
+                </button>
+            </div>
+        </section>
+
+        <!-- Page 6: หน้าสุดท้าย -->
+        <section class="page" id="page6">
+            <div class="page-content final-page">
+                <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
+                <div class="final-hearts">
+                    <span class="heart-float">💕</span>
+                    <span class="heart-float">❤️</span>
+                    <span class="heart-float">💗</span>
+                </div>
+                <div class="final-message">
+                    <p class="final-line">ไม่ต้องตอบอะไรตอนนี้ก็ได้</p>
+                    <p class="final-line">แค่อยากให้รู้ว่า…</p>
+                    <p class="final-highlight">เรารู้สึกดีกับเธอมากจริงๆ 💗</p>
+                </div>
+                <div class="final-divider">✨</div>
+                <p class="final-sub">ถ้าวันไหนเธอเหนื่อย<br>อย่าลืมว่ายังมีใครคนหนึ่งที่คิดถึงเธอเสมอ</p>
+                <button class="btn-final" onclick="celebrate()">
+                    ยิ้มแล้วนะ 😊
+                </button>
+                <button class="btn-restart" id="restartBtn" style="display:none" onclick="restartSurprise()">
+                    🔄 เริ่มใหม่อีกครั้ง
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Page Indicator -->
+    <div class="page-indicator" id="pageIndicator">
+        <span class="indicator-dot active"></span>
+        <span class="indicator-dot"></span>
+        <span class="indicator-dot"></span>
+        <span class="indicator-dot"></span>
+        <span class="indicator-dot"></span>
+        <span class="indicator-dot"></span>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <div class="celebration-hearts"></div>
+            <p class="celebration-text">Happy Valentine's Day! 💕</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
