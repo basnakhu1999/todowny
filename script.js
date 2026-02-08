@@ -618,7 +618,7 @@ function celebrate() {
             restartBtn.style.display = 'block';
             restartBtn.style.animation = 'fadeInUp 0.4s ease-out';
         }
-    }, 4000);
+    }, 7000);  // Display longer for cute experience
 }
 
 // Confetti Animation

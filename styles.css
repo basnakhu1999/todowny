@@ -401,6 +401,33 @@ body {
 /* ========================================
    Page 1: Welcome
    ======================================== */
+
+/* Corner Character Image */
+.corner-character {
+    position: absolute;
+    top: -20px;
+    right: -25px;
+    width: 100px;
+    height: auto;
+    transform: rotate(10deg);
+    z-index: 15;
+    filter: drop-shadow(0 5px 15px rgba(255, 111, 145, 0.3));
+    animation: characterFloat 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes characterFloat {
+
+    0%,
+    100% {
+        transform: rotate(10deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(12deg) translateY(-8px);
+    }
+}
+
 .welcome-image {
     margin-bottom: 30px;
 }
@@ -1191,6 +1218,43 @@ body {
 
 .celebration-content {
     text-align: center;
+}
+
+.celebration-image {
+    width: 230px;
+    height: auto;
+    margin-bottom: -5px;
+    animation: celebrationPop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
+        celebrationFloat 3s ease-in-out infinite 0.8s;
+    filter: drop-shadow(0 10px 30px rgba(255, 111, 145, 0.4));
+}
+
+@keyframes celebrationPop {
+    0% {
+        transform: scale(0) rotate(-10deg);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.2) rotate(5deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes celebrationFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(3deg);
+    }
 }
 
 .celebration-hearts {
