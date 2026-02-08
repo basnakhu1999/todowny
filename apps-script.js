@@ -126,11 +126,37 @@ function doGet(e) {
             .setMimeType(ContentService.MimeType.JSON);
     }
 
+    // Get latest message
+    if (action === 'getLatest') {
+        const ss = SpreadsheetApp.getActiveSpreadsheet();
+        const sheet = ss.getSheetByName(SHEET_NAME);
+
+        if (!sheet || sheet.getLastRow() < 2) {
+            return ContentService
+                .createTextOutput(JSON.stringify({
+                    success: false,
+                    message: null
+                }))
+                .setMimeType(ContentService.MimeType.JSON);
+        }
+
+        // Get the last row's message (column 3)
+        const lastRow = sheet.getLastRow();
+        const message = sheet.getRange(lastRow, 3).getValue();
+
+        return ContentService
+            .createTextOutput(JSON.stringify({
+                success: true,
+                message: message
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+    }
+
     return ContentService
         .createTextOutput(JSON.stringify({
             status: 'ok',
             message: 'Valentine Form API is running 💕',
-            usage: 'Use ?action=getAll to get all responses'
+            usage: 'Use ?action=getAll or ?action=getLatest'
         }))
         .setMimeType(ContentService.MimeType.JSON);
 }

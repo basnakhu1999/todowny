@@ -8,7 +8,7 @@
 // ========================================
 
 // Google Apps Script Web App URL (ใส่ URL หลัง deploy)
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRQ4LnPsd_G85LIKu-oHVEBEnSsOqofredvgqf_UNLQqffTENP288cxXgEFoM85cqbyQ/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAD85Pz8Rkhqw9t8zjSUkSkuc2F9BzmA009USbdbaRDBOyMbVuWB1vFL7G9fqvfHcAuw/exec';
 
 // ========================================
 // Intro Screen
@@ -544,6 +544,9 @@ async function sendToSheet(event) {
 
         showFormMessage('ส่งแล้ว! ขอบคุณนะ 💖', 'success');
 
+        // Store message for final exchange display
+        userSentMessage = message;
+
         // Clear form
         document.getElementById('nickname').value = '';
         document.getElementById('message').value = '';
@@ -724,11 +727,50 @@ function restartSurprise() {
     document.getElementById('postcard').classList.remove('flipped');
     document.getElementById('postcardNextBtn').style.display = 'none';
 
-    // Hide restart button
+    // Hide restart button and exchange overlay
     document.getElementById('restartBtn').style.display = 'none';
+    document.getElementById('exchangeOverlay').classList.remove('active');
 
     // Scroll to top
     window.scrollTo(0, 0);
+}
+
+// Store user's message for final exchange
+let userSentMessage = '';
+
+// Show final message exchange
+async function showFinalExchange() {
+    const overlay = document.getElementById('exchangeOverlay');
+    const herMessage = document.getElementById('herMessage');
+
+    // Show overlay
+    overlay.classList.add('active');
+
+    // Show loading first
+    herMessage.innerHTML = `<span class="bubble-text">💗 กำลังโหลด...</span>`;
+
+    try {
+        // Fetch latest message from Google Sheets
+        const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getLatest');
+        const data = await response.json();
+
+        if (data.success && data.message) {
+            herMessage.innerHTML = `<span class="bubble-text">${data.message}</span>`;
+        } else if (userSentMessage) {
+            // Fallback to session message
+            herMessage.innerHTML = `<span class="bubble-text">${userSentMessage}</span>`;
+        } else {
+            herMessage.innerHTML = `<span class="bubble-text">รักนะ 💕</span>`;
+        }
+    } catch (error) {
+        console.log('Fetch error, using fallback');
+        // Fallback to session message or default
+        if (userSentMessage) {
+            herMessage.innerHTML = `<span class="bubble-text">${userSentMessage}</span>`;
+        } else {
+            herMessage.innerHTML = `<span class="bubble-text">รักนะ 💕</span>`;
+        }
+    }
 }
 
 // ========================================

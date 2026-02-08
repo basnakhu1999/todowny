@@ -206,11 +206,40 @@
                 <button class="btn-final" onclick="celebrate()">
                     ยิ้มแล้วนะ 😊
                 </button>
-                <button class="btn-restart" id="restartBtn" style="display:none" onclick="restartSurprise()">
-                    🔄 เริ่มใหม่อีกครั้ง
+                <button class="btn-next-final" id="restartBtn" style="display:none" onclick="showFinalExchange()">
+                    สุดท้ายแล้ว →
                 </button>
             </div>
         </section>
+    </div>
+
+    <!-- Final Message Exchange Overlay -->
+    <div class="exchange-overlay" id="exchangeOverlay">
+        <div class="exchange-content">
+            <h2 class="exchange-title">💕 ความรู้สึกของเรา 💕</h2>
+
+            <!-- Her message (from form/Google Sheets) -->
+            <div class="exchange-character her-side">
+                <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/her.png" alt="her"
+                    class="exchange-avatar">
+                <div class="speech-bubble her-bubble" id="herMessage">
+                    <span class="bubble-text">กำลังโหลด...</span>
+                </div>
+            </div>
+
+            <!-- My message (hardcoded) -->
+            <div class="exchange-character my-side">
+                <div class="speech-bubble my-bubble">
+                    <span class="bubble-text">จะเป็นเด็กดีของพี่ต่อไป 💗</span>
+                </div>
+                <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/end.png" alt="me"
+                    class="exchange-avatar">
+            </div>
+
+            <button class="btn-restart" onclick="restartSurprise()">
+                🏠 กลับหน้าแรกน้า
+            </button>
+        </div>
     </div>
 
     <!-- Page Indicator -->
