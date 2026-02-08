@@ -8,7 +8,7 @@
 // ========================================
 
 // Google Apps Script Web App URL (ใส่ URL หลัง deploy)
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAD85Pz8Rkhqw9t8zjSUkSkuc2F9BzmA009USbdbaRDBOyMbVuWB1vFL7G9fqvfHcAuw/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIyZRWORaP07qUl2SiD9BasTzmZawWC6GSruO8S9EdsLRy27LJOHmLphIQgpUsgpfRTA/exec';
 
 // ========================================
 // Intro Screen
@@ -738,39 +738,93 @@ function restartSurprise() {
 // Store user's message for final exchange
 let userSentMessage = '';
 
-// Show final message exchange
+// My messages to show sequentially
+const myMessages = [
+    "จะเป็นเด็กดีของพี่ต่อไป 💗",
+    "ขอบคุณที่เล่นจนจบน้า 💗",
+    "อนาคตเป็นยังไงไม่รู้ แต่น่าจะมีผมอยู่ในนั้น 💗"
+];
+
+// Show final message exchange with chat sequence
 async function showFinalExchange() {
     const overlay = document.getElementById('exchangeOverlay');
+    const herSide = document.getElementById('herSide');
     const herMessage = document.getElementById('herMessage');
+    const typingIndicator = document.getElementById('typingIndicator');
+    const myMessagesContainer = document.getElementById('myMessagesContainer');
+    const restartBtn = document.getElementById('restartBtnFinal');
+
+    // Reset state
+    herSide.style.display = 'none';
+    typingIndicator.style.display = 'none';
+    myMessagesContainer.innerHTML = '';
+    restartBtn.style.display = 'none';
 
     // Show overlay
     overlay.classList.add('active');
 
-    // Show loading first
-    herMessage.innerHTML = `<span class="bubble-text">💗 กำลังโหลด...</span>`;
+    // Show loading first with animation
+    herMessage.innerHTML = `<span class="bubble-text loading-dots">💗 กำลังโหลด<span class="dots"></span></span>`;
+    herSide.style.display = 'flex';
+    herSide.classList.add('message-pop');
 
     try {
         // Fetch latest message from Google Sheets
-        const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getLatest');
-        const data = await response.json();
+        const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getLatest', {
+            method: 'GET',
+            redirect: 'follow'
+        });
 
+        const text = await response.text();
+        const data = JSON.parse(text);
+
+        // Update her message
+        await delay(800);
         if (data.success && data.message) {
             herMessage.innerHTML = `<span class="bubble-text">${data.message}</span>`;
         } else if (userSentMessage) {
-            // Fallback to session message
             herMessage.innerHTML = `<span class="bubble-text">${userSentMessage}</span>`;
         } else {
             herMessage.innerHTML = `<span class="bubble-text">รักนะ 💕</span>`;
         }
+
     } catch (error) {
-        console.log('Fetch error, using fallback');
-        // Fallback to session message or default
-        if (userSentMessage) {
-            herMessage.innerHTML = `<span class="bubble-text">${userSentMessage}</span>`;
-        } else {
-            herMessage.innerHTML = `<span class="bubble-text">รักนะ 💕</span>`;
-        }
+        console.log('Fetch error:', error);
+        await delay(800);
+        herMessage.innerHTML = `<span class="bubble-text">${userSentMessage || 'รักนะ 💕'}</span>`;
     }
+
+    // Start my messages sequence
+    for (let i = 0; i < myMessages.length; i++) {
+        // Show typing indicator
+        await delay(1200);
+        typingIndicator.style.display = 'flex';
+
+        // Wait for "typing"
+        await delay(1500);
+        typingIndicator.style.display = 'none';
+
+        // Add my message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'exchange-character my-side message-pop';
+        messageDiv.innerHTML = `
+            <div class="speech-bubble my-bubble">
+                <span class="bubble-text">${myMessages[i]}</span>
+            </div>
+            <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/end.png" alt="me" class="exchange-avatar">
+        `;
+        myMessagesContainer.appendChild(messageDiv);
+    }
+
+    // Show restart button
+    await delay(800);
+    restartBtn.style.display = 'block';
+    restartBtn.classList.add('message-pop');
+}
+
+// Helper delay function
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // ========================================

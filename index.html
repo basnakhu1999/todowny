@@ -218,25 +218,30 @@
         <div class="exchange-content">
             <h2 class="exchange-title">💕 ความรู้สึกของเรา 💕</h2>
 
-            <!-- Her message (from form/Google Sheets) -->
-            <div class="exchange-character her-side">
-                <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/her.png" alt="her"
-                    class="exchange-avatar">
-                <div class="speech-bubble her-bubble" id="herMessage">
-                    <span class="bubble-text">กำลังโหลด...</span>
+            <!-- Chat Messages Container -->
+            <div class="chat-container" id="chatContainer">
+                <!-- Her message (from form/Google Sheets) -->
+                <div class="exchange-character her-side" id="herSide" style="display: none;">
+                    <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/her.png" alt="her"
+                        class="exchange-avatar">
+                    <div class="speech-bubble her-bubble" id="herMessage">
+                        <span class="bubble-text">กำลังโหลด...</span>
+                    </div>
+                </div>
+
+                <!-- My messages container (will be added dynamically) -->
+                <div id="myMessagesContainer"></div>
+
+                <!-- Typing indicator (appears at the bottom of my messages) -->
+                <div class="typing-indicator my-typing" id="typingIndicator" style="display: none;">
+                    <span class="typing-text">กำลังพิมพ์</span>
+                    <span class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </span>
                 </div>
             </div>
 
-            <!-- My message (hardcoded) -->
-            <div class="exchange-character my-side">
-                <div class="speech-bubble my-bubble">
-                    <span class="bubble-text">จะเป็นเด็กดีของพี่ต่อไป 💗</span>
-                </div>
-                <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/end.png" alt="me"
-                    class="exchange-avatar">
-            </div>
-
-            <button class="btn-restart" onclick="restartSurprise()">
+            <button class="btn-restart" id="restartBtnFinal" style="display: none;" onclick="restartSurprise()">
                 🏠 กลับหน้าแรกน้า
             </button>
         </div>

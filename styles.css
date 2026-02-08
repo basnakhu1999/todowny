@@ -1385,6 +1385,9 @@ body {
     padding: 15px 20px;
     border-radius: 20px;
     max-width: 250px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
     animation: bubblePop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -1401,6 +1404,7 @@ body {
 .her-bubble {
     background: white;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 .her-bubble::before {
@@ -1430,6 +1434,126 @@ body {
 .bubble-text {
     font-size: 1rem;
     line-height: 1.5;
+}
+
+/* Loading animation for speech bubble */
+.loading-dots {
+    animation: bubblePulse 1.5s ease-in-out infinite;
+}
+
+.loading-dots .dots::after {
+    content: '';
+    animation: loadingDots 1.5s infinite;
+}
+
+@keyframes loadingDots {
+    0% {
+        content: '';
+    }
+
+    25% {
+        content: '.';
+    }
+
+    50% {
+        content: '..';
+    }
+
+    75% {
+        content: '...';
+    }
+
+    100% {
+        content: '';
+    }
+}
+
+/* Chat container */
+.chat-container {
+    padding: 10px 0;
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    width: fit-content;
+    margin: 10px 0;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+/* Position typing indicator on the right (ME side) */
+.typing-indicator.my-typing {
+    margin-left: auto;
+    background: linear-gradient(135deg, rgba(255, 111, 145, 0.2) 0%, rgba(255, 143, 171, 0.2) 100%);
+}
+
+.typing-text {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dots span {
+    width: 8px;
+    height: 8px;
+    background: var(--pink-medium);
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+
+    30% {
+        transform: translateY(-8px);
+        opacity: 1;
+    }
+}
+
+/* Message pop in animation */
+.message-pop {
+    animation: messagePop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bubblePulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(0.98);
+    }
 }
 
 .btn-next-final {
