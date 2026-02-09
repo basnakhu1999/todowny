@@ -469,6 +469,59 @@ body {
 }
 
 /* ========================================
+   Postcard Corner Decorations
+   ======================================== */
+.page-content::before,
+.page-content::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid transparent;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Top-left corner */
+.page-content::before {
+    top: 15px;
+    left: 15px;
+    border-top-color: rgba(255, 143, 171, 0.4);
+    border-left-color: rgba(255, 143, 171, 0.4);
+    border-radius: 8px 0 0 0;
+}
+
+/* Bottom-right corner */
+.page-content::after {
+    bottom: 15px;
+    right: 15px;
+    border-bottom-color: rgba(255, 143, 171, 0.4);
+    border-right-color: rgba(255, 143, 171, 0.4);
+    border-radius: 0 0 8px 0;
+}
+
+/* Additional corners using child pseudo-element on ribbon */
+.card-ribbon::before {
+    content: '❀';
+    position: absolute;
+    top: 45px;
+    right: -125px;
+    font-size: 0.8rem;
+    color: rgba(255, 143, 171, 0.5);
+    transform: rotate(15deg);
+}
+
+.card-ribbon::after {
+    content: '❀';
+    position: absolute;
+    top: 45px;
+    left: -125px;
+    font-size: 0.8rem;
+    color: rgba(255, 143, 171, 0.5);
+    transform: rotate(-15deg);
+}
+
+/* ========================================
    Card Ribbon Header
    ======================================== */
 .card-ribbon {

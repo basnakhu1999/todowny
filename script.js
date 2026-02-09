@@ -101,6 +101,10 @@ function openIntro() {
     if (introOpened) return;
     introOpened = true;
 
+    // Start music IMMEDIATELY on user interaction (iOS compatibility)
+    // Must be called directly in click handler, not in setTimeout
+    startMusic();
+
     const introScreen = document.getElementById('introScreen');
     const envelope = document.getElementById('introEnvelope');
     const introContent = document.querySelector('.intro-content');
@@ -146,9 +150,6 @@ function openIntro() {
 
         // Activate start button with delay
         activateStartButton();
-
-        // Start background music
-        startMusic();
     }, 1200);
 }
 
@@ -283,9 +284,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 let currentPage = 1;
 const totalPages = 6;
+let isTransitioning = false; // Prevent rapid clicks
 
 function nextPage() {
-    if (currentPage >= totalPages) return;
+    // Block if already transitioning or at last page
+    if (currentPage >= totalPages || isTransitioning) return;
+
+    // Lock transitions
+    isTransitioning = true;
 
     const currentSection = document.getElementById(`page${currentPage}`);
     const nextSection = document.getElementById(`page${currentPage + 1}`);
@@ -307,6 +313,11 @@ function nextPage() {
         } else if (currentPage === 3) {
             initPhotoPage();
         }
+
+        // Unlock after transition completes
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 300);
     }, 100);
 
     // Play click sound (optional)
