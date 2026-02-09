@@ -45,6 +45,121 @@ body {
 }
 
 /* ========================================
+   Music Control Button
+   ======================================== */
+.music-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--red-soft) 0%, #FF8FAB 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(255, 111, 145, 0.4);
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.music-control.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.music-control:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 111, 145, 0.5);
+}
+
+.music-control:active {
+    transform: scale(0.95);
+}
+
+.music-icon {
+    font-size: 1.4rem;
+    position: absolute;
+    transition: opacity 0.3s ease;
+}
+
+.music-control.playing .music-icon {
+    opacity: 0;
+}
+
+/* Sound Wave Bars */
+.sound-waves {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    height: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.music-control.playing .sound-waves {
+    opacity: 1;
+}
+
+.wave-bar {
+    width: 3px;
+    height: 100%;
+    background: white;
+    border-radius: 3px;
+    animation: waveAnimation 0.8s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) {
+    animation-delay: 0s;
+    height: 40%;
+}
+
+.wave-bar:nth-child(2) {
+    animation-delay: 0.1s;
+    height: 70%;
+}
+
+.wave-bar:nth-child(3) {
+    animation-delay: 0.2s;
+    height: 100%;
+}
+
+.wave-bar:nth-child(4) {
+    animation-delay: 0.1s;
+    height: 70%;
+}
+
+.wave-bar:nth-child(5) {
+    animation-delay: 0s;
+    height: 40%;
+}
+
+@keyframes waveAnimation {
+
+    0%,
+    100% {
+        transform: scaleY(0.4);
+    }
+
+    50% {
+        transform: scaleY(1);
+    }
+}
+
+.music-control.muted .sound-waves {
+    opacity: 0.3;
+}
+
+.music-control.muted .wave-bar {
+    animation: none;
+    transform: scaleY(0.3);
+}
+
+/* ========================================
    Intro Screen
    ======================================== */
 .intro-screen {
@@ -574,6 +689,110 @@ body {
     transform: translateY(0) scale(0.98);
 }
 
+/* Button Container for heart burst */
+.btn-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Disabled button state */
+.btn-primary.btn-disabled {
+    background: linear-gradient(135deg, #C0C0C0 0%, #E0E0E0 100%);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    cursor: not-allowed;
+    animation: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary.btn-disabled:hover {
+    transform: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Progress fill animation (left to right) */
+.btn-primary.btn-filling::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--red-soft) 0%, #FF8FAB 100%);
+    animation: fillProgress 2s ease-out forwards;
+    z-index: 0;
+    border-radius: inherit;
+}
+
+.btn-primary.btn-filling span {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes fillProgress {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Button activation animation (final pop) */
+.btn-primary.btn-activating {
+    animation: buttonActivate 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes buttonActivate {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        background: linear-gradient(135deg, var(--red-soft) 0%, #FF8FAB 100%);
+        transform: scale(1);
+    }
+}
+
+/* Heart burst container */
+.heart-burst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 100;
+}
+
+.heart-burst .burst-heart {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: heartBurst 1s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes heartBurst {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: var(--burst-direction) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: var(--burst-direction) scale(0.5);
+    }
+}
+
 .btn-emoji {
     font-size: 1.3rem;
     animation: wiggle 2s ease-in-out infinite;
@@ -664,6 +883,101 @@ body {
 
     100% {
         transform: scale(1);
+    }
+}
+
+/* ===== Feelings Creative Animations ===== */
+
+/* Emoji BIG bounce animation */
+@keyframes emojiBigBounce {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    40% {
+        transform: scale(1.4);
+        opacity: 1;
+    }
+
+    60% {
+        transform: scale(0.9);
+    }
+
+    80% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Word-by-word bounce reveal */
+.word-bounce {
+    display: inline-block;
+    opacity: 0;
+    animation: wordBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes wordBounceIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.5);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Floating mini hearts around emoji */
+.mini-float-heart {
+    opacity: 0;
+}
+
+@keyframes miniHeartFloat {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translate(calc(-50% + var(--float-x) * 0.3), calc(-50% + var(--float-y) * 0.3)) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--float-x)), calc(-50% + var(--float-y))) scale(0.5);
+    }
+}
+
+/* Confetti burst for last feeling */
+.feel-confetti {
+    opacity: 0;
+}
+
+@keyframes feelConfettiBurst {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2) rotate(calc(var(--conf-r) * 0.2));
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--conf-x)), calc(-50% + var(--conf-y))) scale(0.8) rotate(var(--conf-r));
     }
 }
 
@@ -794,6 +1108,19 @@ body {
     color: var(--text-dark);
     font-style: italic;
     padding: 0 10px;
+}
+
+/* Actual photo image styling */
+.photo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.photo-placeholder:hover .photo-image {
+    transform: scale(1.02);
 }
 
 .photo-dots {

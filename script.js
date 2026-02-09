@@ -11,6 +11,50 @@
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIyZRWORaP07qUl2SiD9BasTzmZawWC6GSruO8S9EdsLRy27LJOHmLphIQgpUsgpfRTA/exec';
 
 // ========================================
+// Background Music
+// ========================================
+
+let isMusicPlaying = false;
+
+// Toggle music on/off
+function toggleMusic() {
+    const audio = document.getElementById('bgMusic');
+    const control = document.getElementById('musicControl');
+
+    if (isMusicPlaying) {
+        audio.pause();
+        control.classList.remove('playing');
+        control.classList.add('muted');
+        isMusicPlaying = false;
+    } else {
+        audio.play().catch(e => console.log('Audio play failed:', e));
+        control.classList.add('playing');
+        control.classList.remove('muted');
+        isMusicPlaying = true;
+    }
+}
+
+// Start music (called when entering page 1)
+function startMusic() {
+    const audio = document.getElementById('bgMusic');
+    const control = document.getElementById('musicControl');
+
+    // Show the music control button
+    control.classList.add('visible');
+
+    // Try to autoplay
+    audio.play().then(() => {
+        control.classList.add('playing');
+        isMusicPlaying = true;
+    }).catch(e => {
+        // Autoplay blocked by browser, show muted state
+        console.log('Autoplay blocked, user interaction required');
+        control.classList.add('muted');
+        isMusicPlaying = false;
+    });
+}
+
+// ========================================
 // Intro Screen
 // ========================================
 
@@ -99,6 +143,12 @@ function openIntro() {
     setTimeout(() => {
         introScreen.classList.add('hidden');
         createHeartBurst();
+
+        // Activate start button with delay
+        activateStartButton();
+
+        // Start background music
+        startMusic();
     }, 1200);
 }
 
@@ -153,6 +203,79 @@ function createIntroHeartExplosion() {
     `;
     document.head.appendChild(style);
 }
+
+// ========================================
+// Start Button Activation
+// ========================================
+
+// Activate start button after delay with heart burst
+function activateStartButton() {
+    const btn = document.getElementById('startBtn');
+    const heartBurst = document.getElementById('heartBurst');
+
+    if (!btn) return;
+
+    // Start filling animation immediately
+    btn.classList.add('btn-filling');
+
+    // After fill completes (2 seconds), trigger heart burst and enable
+    setTimeout(() => {
+        // Remove filling, add final activation pop
+        btn.classList.remove('btn-filling');
+        btn.classList.add('btn-activating');
+
+        // Create heart burst effect
+        createButtonHeartBurst(heartBurst);
+
+        // After pop animation, enable button
+        setTimeout(() => {
+            btn.classList.remove('btn-disabled', 'btn-activating');
+            btn.disabled = false;
+            btn.onclick = nextPage;
+
+            // Add pulse animation after activation
+            btn.style.animation = 'btnPulse 2s ease-in-out infinite';
+        }, 500);
+
+    }, 2000);
+}
+
+// Create heart burst from button
+function createButtonHeartBurst(container) {
+    const hearts = ['💕', '❤️', '💗', '💖', '✨'];
+    const directions = [
+        'translate(-60px, -60px)',
+        'translate(60px, -60px)',
+        'translate(-80px, 0)',
+        'translate(80px, 0)',
+        'translate(-60px, 60px)',
+        'translate(60px, 60px)',
+        'translate(0, -80px)',
+        'translate(0, 80px)',
+        'translate(-40px, -80px)',
+        'translate(40px, -80px)',
+        'translate(-40px, 80px)',
+        'translate(40px, 80px)'
+    ];
+
+    for (let i = 0; i < 12; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'burst-heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.setProperty('--burst-direction', directions[i]);
+        heart.style.animationDelay = `${i * 30}ms`;
+        container.appendChild(heart);
+
+        // Remove after animation
+        setTimeout(() => heart.remove(), 1200);
+    }
+}
+
+// Initialize button activation on page load
+document.addEventListener('DOMContentLoaded', function () {
+    // Wait for intro to finish before starting button activation
+    // This will be called after the intro screen is opened
+});
 
 // ========================================
 // Page Navigation
@@ -217,11 +340,11 @@ function goToPage(pageNum) {
 // ========================================
 
 const feelings = [
-    { emoji: '🥰', text: 'อยู่กับเธอแล้ว เราสบายใจจัง' },
-    { emoji: '😊', text: 'แค่เห็นเธอยิ้ม วันก็สดใสขึ้น' },
-    { emoji: '💪', text: 'บางทีเราอาจไม่เก่ง แต่เราตั้งใจนะ' },
-    { emoji: '💕', text: 'ขอบคุณที่เข้ามาในชีวิตเรา' },
-    { emoji: '🌟', text: 'เธอทำให้ทุกวันของเราพิเศษขึ้น' }
+    { emoji: '☺️', text: 'แค่ได้คุยกันแบบนี้... ก็สบายใจแล้ว' },
+    { emoji: '✨', text: 'ความสบายใจแบบนี้ไม่ได้เกิดกับทุกคน' },
+    { emoji: '🥲', text: 'บางวันเหนื่อยๆ.. แต่ก็ทำให้มีรอยยิ้มได้' },
+    { emoji: '💗', text: 'ไม่รู้ตั้งแต่เมื่อไหร่ แต่รู้สึกดีขึ้น' },
+    { emoji: '🙏', text: 'ขอบคุณทุกๆกำลังใจ.  ที่คอยส่งให้ผมตลอด' }
 ];
 
 let feelIndex = 0;
@@ -240,41 +363,117 @@ function nextFeel() {
     const textEl = document.getElementById('feelText');
     const counterEl = document.getElementById('feelCounter');
     const nextBtn = document.getElementById('feelNextBtn');
+    const feelContainer = document.querySelector('.feel-container');
 
-    // Add animation class
+    // Get current feeling
+    const currentFeeling = feelings[feelIndex];
+
+    // Reset animations
     emojiEl.style.animation = 'none';
-    textEl.style.animation = 'none';
-
-    // Trigger reflow
+    textEl.innerHTML = '';
     void emojiEl.offsetWidth;
-    void textEl.offsetWidth;
 
-    // Update content
-    emojiEl.textContent = feelings[feelIndex].emoji;
-    textEl.textContent = feelings[feelIndex].text;
+    // 1. Emoji BIG bounce with floating hearts
+    emojiEl.textContent = currentFeeling.emoji;
+    emojiEl.style.animation = 'emojiBigBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
 
-    // Update view count (max at feelings.length)
+    // Create floating mini hearts around emoji
+    createFloatingMiniHearts(feelContainer);
+
+    // 2. Word-by-word reveal with bounce (after emoji animation)
+    setTimeout(() => {
+        const words = currentFeeling.text.split(' ');
+        textEl.innerHTML = words.map((word, i) =>
+            `<span class="word-bounce" style="animation-delay: ${i * 0.12}s">${word}</span>`
+        ).join(' ');
+    }, 400);
+
+    // Update view count
     feelViewCount = Math.min(feelViewCount + 1, feelings.length);
     counterEl.textContent = feelViewCount;
 
     // Update progress hearts
     updateProgressHearts(feelViewCount);
 
-    // Restart animations
-    emojiEl.style.animation = 'bounceIn 0.5s ease-out';
-    textEl.style.animation = 'fadeInUp 0.4s ease-out';
-
     // Move to next feeling
     feelIndex = (feelIndex + 1) % feelings.length;
 
-    // Show next button when all feelings are viewed
+    // Check if last feeling - trigger special effect
     if (feelViewCount >= feelings.length) {
-        nextBtn.style.display = 'block';
-        nextBtn.style.animation = 'fadeInUp 0.4s ease-out';
-    }
+        // Mini confetti celebration!
+        setTimeout(() => {
+            createFeelConfetti(feelContainer);
+        }, 800);
 
-    // Create heart burst effect
-    createHeartBurst();
+        nextBtn.style.display = 'block';
+        nextBtn.style.animation = 'fadeInUp 0.4s ease-out 1s both';
+    }
+}
+
+// Create floating mini hearts around emoji
+function createFloatingMiniHearts(container) {
+    const hearts = ['💕', '💗', '💖', '✨', '💓'];
+    const emojiEl = document.getElementById('feelEmoji');
+    const rect = emojiEl.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    for (let i = 0; i < 8; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'mini-float-heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+
+        // Position relative to emoji center
+        const angle = (i / 8) * Math.PI * 2;
+        const distance = 40 + Math.random() * 30;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+
+        heart.style.cssText = `
+            position: absolute;
+            left: 50%;
+            top: 20%;
+            font-size: ${12 + Math.random() * 8}px;
+            pointer-events: none;
+            z-index: 10;
+            --float-x: ${x}px;
+            --float-y: ${y}px;
+            animation: miniHeartFloat 1s ease-out forwards;
+            animation-delay: ${i * 0.05}s;
+        `;
+        container.appendChild(heart);
+
+        // Remove after animation
+        setTimeout(() => heart.remove(), 1200);
+    }
+}
+
+// Create mini confetti for last feeling
+function createFeelConfetti(container) {
+    const confetti = ['🎉', '✨', '💕', '🎊', '💗', '⭐'];
+
+    for (let i = 0; i < 20; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'feel-confetti';
+        piece.textContent = confetti[Math.floor(Math.random() * confetti.length)];
+
+        piece.style.cssText = `
+            position: absolute;
+            left: ${20 + Math.random() * 60}%;
+            top: 50%;
+            font-size: ${14 + Math.random() * 12}px;
+            pointer-events: none;
+            z-index: 20;
+            --conf-x: ${(Math.random() - 0.5) * 150}px;
+            --conf-y: ${-80 - Math.random() * 100}px;
+            --conf-r: ${Math.random() * 360}deg;
+            animation: feelConfettiBurst 1.2s ease-out forwards;
+            animation-delay: ${i * 0.03}s;
+        `;
+        container.appendChild(piece);
+
+        // Remove after animation
+        setTimeout(() => piece.remove(), 1500);
+    }
 }
 
 // Update progress hearts display
@@ -293,10 +492,22 @@ function updateProgressHearts(count) {
 // ========================================
 
 const photos = [
-    { icon: '📷', caption: 'รูปนี้...เราเผลอยิ้มทั้งวันเลยรู้ไหม 😊' },
-    { icon: '🎠', caption: 'วันนั้นสนุกมากเลย จำได้ไหม?' },
-    { icon: '🌅', caption: 'ทุกช่วงเวลากับเธอมันพิเศษหมดเลย' },
-    { icon: '🎂', caption: 'ขอบคุณที่อยู่ด้วยกันในวันสำคัญ' }
+    {
+        url: 'https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/01.png', // ใส่ URL รูปที่ 1
+        caption: 'รูปนี้...เราเผลอยิ้มทั้งวันเลยรู้ไหม 😊'
+    },
+    {
+        url: 'YOUR_IMAGE_URL_2', // ใส่ URL รูปที่ 2
+        caption: 'วันนั้นสนุกมากเลย จำได้ไหม?'
+    },
+    {
+        url: 'YOUR_IMAGE_URL_3', // ใส่ URL รูปที่ 3
+        caption: 'ทุกช่วงเวลากับเธอมันพิเศษหมดเลย'
+    },
+    {
+        url: 'YOUR_IMAGE_URL_4', // ใส่ URL รูปที่ 4
+        caption: 'ขอบคุณที่อยู่ด้วยกันในวันสำคัญ'
+    }
 ];
 
 let photoIndex = 0;
@@ -340,9 +551,9 @@ function showPhoto(index) {
     captionEl.style.opacity = '0';
 
     setTimeout(() => {
+        // Display actual image
         photoDisplay.innerHTML = `
-            <span class="photo-icon">${photos[index].icon}</span>
-            <p>รูปความทรงจำของเรา</p>
+            <img src="${photos[index].url}" alt="ความทรงจำ ${index + 1}" class="photo-image">
         `;
         captionEl.textContent = photos[index].caption;
 
