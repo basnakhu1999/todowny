@@ -108,7 +108,7 @@
                 <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
                 <div class="feel-container">
                     <div class="feel-emoji" id="feelEmoji">🥰</div>
-                    <p class="feel-text" id="feelText">ผมมีอะไรอยากจะบอกด้วยแหละ...</p>
+                    <p class="feel-text" id="feelText">คิดอะไรแนวนี้ออกเลยอยากทำให้...</p>
                     <div class="feel-counter">
                         <span id="feelCounter">0</span> / <span id="feelTotal">5</span>
                     </div>
@@ -133,15 +133,15 @@
         <section class="page" id="page3">
             <div class="page-content">
                 <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
-                <h2 class="section-title">ใครกันนะที่ให้ของขวัญนี้</h2>
+                <h2 class="section-title">มีอะไรอยากให้พี่ดู</h2>
                 <div class="photo-gallery">
                     <div class="photo-frame">
                         <div class="photo-placeholder" id="photoDisplay">
                             <span class="photo-icon">📷</span>
-                            <p>รูปความทรงจำของเรา</p>
+                            <p>...........</p>
                         </div>
                     </div>
-                    <p class="photo-caption" id="photoCaption">รูปนี้...เราเผลอยิ้มทั้งวันเลยรู้ไหม 😊</p>
+                    <p class="photo-caption" id="photoCaption">.........</p>
                 </div>
                 <div class="photo-dots" id="photoDots"></div>
                 <button class="btn-secondary" onclick="nextPhoto()">
@@ -171,6 +171,7 @@
                                 <p class="message-line" id="messageLine1"></p>
                                 <p class="message-line" id="messageLine2"></p>
                                 <p class="message-line" id="messageLine3"></p>
+                                <p class="message-line" id="messageLine4"></p>
                                 <p class="signature" id="signatureText"></p>
                             </div>
                         </div>
@@ -186,7 +187,7 @@
         <div class="postcard-popup" id="postcardPopup">
             <div class="popup-content">
                 <button class="popup-close" onclick="closePostcardPopup()">✕</button>
-                <img src="https://c8.alamy.com/comp/2HBYYFG/romantic-set-of-postcard-love-valentines-day-vector-design-concept-for-valentines-day-and-other-users-2HBYYFG.jpg"
+                <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/card.jpg"
                     alt="Valentine Postcard" class="popup-image">
             </div>
         </div>
@@ -196,14 +197,14 @@
             <div class="page-content">
                 <div class="card-ribbon"><span class="ribbon-text">To พี่ดาวนี่💕</span></div>
                 <h2 class="section-title">💬 เขียนถึงผมหน่อยน้าา</h2>
-                <p class="form-intro">เราอยากอ่านนะ 🙂</p>
+                <p class="form-intro">รออ่านอยู่นะ 🙂</p>
                 <form id="feelingForm" onsubmit="sendToSheet(event)">
                     <div class="form-group">
                         <label for="nickname">ชื่อเล่น (ไม่บังคับ)</label>
                         <input type="text" id="nickname" placeholder="เรียกฉันว่า...">
                     </div>
                     <div class="form-group">
-                        <label for="message">ความรู้สึกที่อยากบอก</label>
+                        <label for="message">ความรู้สึกที่อยากบอก --อะไรก็ได้</label>
                         <textarea id="message" rows="4" placeholder="พิมพ์อะไรก็ได้ที่อยากบอก..."></textarea>
                     </div>
                     <button type="submit" class="btn-primary">
@@ -211,7 +212,7 @@
                     </button>
                 </form>
                 <button class="btn-skip" onclick="nextPage()">
-                    ไม่อยากให้กดข้ามเลยค้าบบ (ข้ามไปก่อน)
+                    ข้ามไปก่อน
                 </button>
             </div>
         </section>
@@ -226,17 +227,18 @@
                     <span class="heart-float">💗</span>
                 </div>
                 <div class="final-message">
-                    <p class="final-line">กดมาถึงตรงนี้แล้วนะพี่ดาว</p>
+                    <p class="final-line">เกือบจะสุดท้ายแล้วนะพี่ดาว</p>
                     <p class="final-line">แค่อยากให้รู้ว่า…</p>
-                    <p class="final-highlight">มันกลายเป็นช่วงเวลาที่เด็กสบายใจสุดของวัน 💗</p>
+                    <p class="final-highlight">มันกลายเป็นช่วงเวลาที่...</p>
+                    <p class="final-highlight">สบายใจสุดของวัน </p>
                 </div>
-                <div class="final-divider">✨</div>
-                <p class="final-sub">แบบว่า...<br>ถ้าวันหนึ่งความรู้สึกนี้ค่อยๆ เดินไปไกลกว่านี้ แบบไม่รีบ ไม่กดดัน</p>
+                <div class="final-divider">💗</div>
+                <p class="final-sub">แบบว่า...ถ้าวันหนึ่งความรู้สึกนี้ค่อยๆ เดินไปไกลกว่านี้ </p>
                 <button class="btn-final" onclick="celebrate()">
                     กดตรงนี้ให้หน่อยค้าบบ 😊
                 </button>
                 <button class="btn-next-final" id="restartBtn" style="display:none" onclick="showFinalExchange()">
-                    สุดท้ายแล้ว →
+                    สุดท้ายแล้วจริงๆ →
                 </button>
             </div>
         </section>
@@ -245,7 +247,7 @@
     <!-- Final Message Exchange Overlay -->
     <div class="exchange-overlay" id="exchangeOverlay">
         <div class="exchange-content">
-            <h2 class="exchange-title">💕 ความรู้สึกของเรา 💕</h2>
+            <h2 class="exchange-title">💕 พี่จะบอกอะไรผมหรอ 💕</h2>
 
             <!-- Chat Messages Container -->
             <div class="chat-container" id="chatContainer">
@@ -254,7 +256,7 @@
                     <img src="https://raw.githubusercontent.com/basnakhu1999/todowny/refs/heads/main/her.png" alt="her"
                         class="exchange-avatar">
                     <div class="speech-bubble her-bubble" id="herMessage">
-                        <span class="bubble-text">กำลังโหลด...</span>
+                        <span class="bubble-text">กำลังพิมพ์...</span>
                     </div>
                 </div>
 
@@ -271,7 +273,7 @@
             </div>
 
             <button class="btn-restart" id="restartBtnFinal" style="display: none;" onclick="restartSurprise()">
-                🏠 กลับหน้าแรกน้า
+                🏠 หมดแล้ววว (Home)
             </button>
         </div>
     </div>
